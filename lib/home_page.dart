@@ -15,7 +15,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  IOWebSocketChannel _channel = IOWebSocketChannel.connect('ws://echo.websocket.org');
+  IOWebSocketChannel _channel =
+      IOWebSocketChannel.connect('ws://echo.websocket.org');
 
   List<Widget> _children;
 
@@ -24,12 +25,11 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     _children = [
-      TabItemView("A",Colors.red,_channel),
-      TabItemView("B",Colors.blue,_channel)
+      TabItemView("A", Colors.red, _channel),
+      TabItemView("B", Colors.blue, _channel)
     ];
 
-    Timer timer = Timer.periodic(Duration(seconds: 1),(t) {
-
+    Timer timer = Timer.periodic(Duration(seconds: 1), (t) {
       _channel.sink.add(DateTime.now().toString());
     });
   }
@@ -42,39 +42,32 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.apps),
-              tooltip: 'Air it',
-              onPressed: () {
-                Navigator.of(context).pushNamed('/about');
-              },
-            )
-          ]
-        ),
-        body: SafeArea(
-            child : _children[_currentIndex]
-        ),
-
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: _onTabTapped,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.mail),
-              title: Text('Messages'),
-            ),
-          ],
-        ),
-      );
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.title), actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.apps),
+          tooltip: 'Air it',
+          onPressed: () {
+            Navigator.of(context).pushNamed('/about');
+          },
+        )
+      ]),
+      body: SafeArea(child: _children[_currentIndex]),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail),
+            title: Text('Messages'),
+          ),
+        ],
+      ),
+    );
   }
 
   _onTabTapped(int index) {
