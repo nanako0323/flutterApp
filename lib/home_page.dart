@@ -43,15 +43,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title), actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.apps),
-          tooltip: 'Air it',
-          onPressed: () {
-            Navigator.of(context).pushNamed('/about');
-          },
-        )
-      ]),
+      appBar: AppBar(title: Text(widget.title), actions: <Widget>[]),
+      drawer: Drawer(child: _drawerContents(context)),
       body: SafeArea(child: _children[_currentIndex]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -68,6 +61,28 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  Widget _drawerContents(BuildContext context) {
+    return ListView(padding: EdgeInsets.zero, children: <Widget>[
+      DrawerHeader(
+        child: Text('Menu'),
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+      ),
+      ListTile(
+        title: Text('Animation1'),
+        onTap: () {
+          Navigator.of(context).pushNamed('/animation1');
+        },
+      ),
+      ListTile(
+          title: Text('About'),
+          onTap: () {
+            Navigator.of(context).pushNamed('/about');
+          }),
+    ]);
   }
 
   _onTabTapped(int index) {
