@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/io.dart';
+import 'package:flutter_helloworld/models/echo_client.dart';
+import 'package:provider/provider.dart';
 
 class TabItemView extends StatefulWidget {
   final Color color;
-
   final String title;
 
-  final IOWebSocketChannel channel;
-
-  TabItemView(this.title, this.color, this.channel);
+  TabItemView(this.title, this.color);
 
   @override
   _TabItemViewState createState() => _TabItemViewState();
 }
 
 class _TabItemViewState extends State<TabItemView> {
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +23,7 @@ class _TabItemViewState extends State<TabItemView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               StreamBuilder(
-                  stream: widget.channel.stream,
+                  stream: Provider.of<EchoClient>(context).stream,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');

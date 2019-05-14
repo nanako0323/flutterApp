@@ -1,7 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/io.dart';
-import 'tab_item_view.dart';
+import 'package:flutter_helloworld/models/tab_item_metadata.dart';
+import 'package:flutter_helloworld/widgets/home/tab_item_view.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -14,24 +13,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-
-  IOWebSocketChannel _channel =
-      IOWebSocketChannel.connect('ws://echo.websocket.org');
-
   List<Widget> _children;
 
   @override
   void initState() {
     super.initState();
 
-    _children = [
-      TabItemView("A", Colors.red, _channel),
-      TabItemView("B", Colors.blue, _channel)
-    ];
-
-    Timer timer = Timer.periodic(Duration(seconds: 1), (t) {
-      _channel.sink.add(DateTime.now().toString());
-    });
+    _children = TabItemMetadata.getMetadataList()
+        .map((m) => TabItemView(m.name, m.color) as Widget);
   }
 
   void changeIndex(int index) {
@@ -72,17 +61,15 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       ListTile(
-        title: Text('Animation1'),
-        onTap: () {
-          Navigator.of(context).pushNamed('/animation1');
-        },
-      ),
-      ListTile(
-          title: Text('About'),
-          onTap: () {
-            Navigator.of(context).pushNamed('/about');
-          }),
+          title: Text('Animation1'),
+          onTap: () => _onTap(context, '/animation1')),
+      ListTile(title: Text('About'), onTap: () => _onTap(context, '/about'))
     ]);
+  }
+
+  _onTap(BuildContext context, String name) {
+    Navigator.pop(context);
+    Navigator.of(context).pushNamed(name);
   }
 
   _onTabTapped(int index) {
