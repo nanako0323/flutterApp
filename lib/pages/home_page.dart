@@ -15,12 +15,15 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   List<Widget> _children;
 
+  _HomePageState(){
+    _children = TabItemMetadata.getMetadataList()
+        .map((m) => TabItemView(m.name, m.color) as Widget)
+        .toList();
+  }
+
   @override
   void initState() {
     super.initState();
-
-    _children = TabItemMetadata.getMetadataList()
-        .map((m) => TabItemView(m.name, m.color) as Widget);
   }
 
   void changeIndex(int index) {
