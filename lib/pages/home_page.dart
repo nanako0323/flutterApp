@@ -13,12 +13,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  List<Widget> _children;
+  List<Widget> _tabViews;
+  List<Tab> _tabs;
 
-  _HomePageState(){
-    _children = TabItemMetadata.getMetadataList()
+  _HomePageState() {
+    _tabViews = TabItemMetadata.list()
         .map((m) => TabItemView(m.name, m.color) as Widget)
         .toList();
+
+    _tabs = TabItemMetadata.list().map((m) {
+      return Tab(text: m.name);
+    }).toList();
   }
 
   @override
@@ -34,28 +39,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title), actions: <Widget>[]),
-      drawer: Drawer(child: _drawerContents(context)),
-      body: SafeArea(child: _children[_currentIndex]),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
+    return DefaultTabController(
+        length: TabItemMetadata.list().length,
+        child: Scaffold(
+          appBar:
+              AppBar(title: Text(widget.title), bottom: _buildTabBar(context)),
+          drawer: Drawer(child: _buildDrawerContents(context)),
+          body: TabBarView(
+            children: _tabViews,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            title: Text('Messages'),
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
-  Widget _drawerContents(BuildContext context) {
+  Widget _buildTabBar(BuildContext context) {
+    return TabBar(tabs: _tabs);
+  }
+
+  Widget _buildDrawerContents(BuildContext context) {
     return ListView(padding: EdgeInsets.zero, children: <Widget>[
       DrawerHeader(
         child: Text('Menu'),
@@ -73,9 +73,5 @@ class _HomePageState extends State<HomePage> {
   _onTap(BuildContext context, String name) {
     Navigator.pop(context);
     Navigator.of(context).pushNamed(name);
-  }
-
-  _onTabTapped(int index) {
-    this.changeIndex(index);
   }
 }

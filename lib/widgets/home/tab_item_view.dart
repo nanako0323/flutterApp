@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_helloworld/models/echo_client.dart';
-import 'package:provider/provider.dart';
 
 class TabItemView extends StatefulWidget {
   final Color color;
@@ -21,23 +19,26 @@ class _TabItemViewState extends State<TabItemView> {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              StreamBuilder(
-                  stream: Provider.of<EchoClient>(context).stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24.0),
-                      child: Text(snapshot.hasData ? '${snapshot.data}' : ''),
-                    );
-                  })
+            children: [
+              Container(
+                  color: widget.color,
+                  child: Transform(
+                    alignment: Alignment.topRight,
+                    transform: Matrix4.skewY(0.3)..rotateZ(3.14 / 12.0),
+                    child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        color: const Color(0xFFE8581C),
+                        child: Text(DateTime.now().toString())),
+                  ))
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

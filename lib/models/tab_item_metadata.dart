@@ -7,10 +7,12 @@ class TabItemMetadata {
 
   TabItemMetadata(this.name, this.color);
 
-  static List<TabItemMetadata> getMetadataList() {
+  static List<TabItemMetadata> list() {
     return [
       TabItemMetadata("A", Colors.red),
-      TabItemMetadata("B", Colors.blue)
+      TabItemMetadata("B", Colors.blue),
+      TabItemMetadata("C", Colors.green),
+      TabItemMetadata("D", Colors.black12)
     ];
   }
 }
