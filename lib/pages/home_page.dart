@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
   List<Widget> _tabViews;
   List<Tab> _tabs;
 
@@ -31,12 +30,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  void changeIndex(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -47,6 +40,7 @@ class _HomePageState extends State<HomePage> {
           drawer: Drawer(child: _buildDrawerContents(context)),
           body: TabBarView(
             children: _tabViews,
+
           ),
         ));
   }

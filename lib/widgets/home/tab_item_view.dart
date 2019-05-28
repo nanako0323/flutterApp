@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_helloworld/models/echo_client.dart';
+import 'package:provider/provider.dart';
 
 class TabItemView extends StatefulWidget {
   final Color color;
@@ -13,6 +15,8 @@ class TabItemView extends StatefulWidget {
 class _TabItemViewState extends State<TabItemView> {
   @override
   Widget build(BuildContext context) {
+    var client = Provider.of<EchoClient>(context);
+
     return Scaffold(
       backgroundColor: widget.color,
       body: Container(
@@ -20,8 +24,18 @@ class _TabItemViewState extends State<TabItemView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  color: widget.color,
+              StreamBuilder<String>(
+                  stream: client.stream,
+                  initialData: "",
+                  builder: (_, snap) {
+                    if (snap.hasData) {
+                      return Text(snap.data);
+                    } else {
+                      return Text("Error");
+                    }
+                  }),
+              Padding(
+                padding: EdgeInsets.all(150),
                   child: Transform(
                     alignment: Alignment.topRight,
                     transform: Matrix4.skewY(0.3)..rotateZ(3.14 / 12.0),
