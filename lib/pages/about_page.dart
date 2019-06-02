@@ -28,7 +28,7 @@ class _AboutPageState extends State<AboutPage> {
             child: Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[...switchList]))));
+                    children: switchList))));
   }
 
   _onSwitchChanged1(newValue) {
